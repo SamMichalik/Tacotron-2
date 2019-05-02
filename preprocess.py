@@ -36,7 +36,7 @@ def norm_data(args):
 	merge_books = (args.merge_books=='True')
 
 	print('Selecting data folders..')
-	supported_datasets = ['LJSpeech-1.0', 'LJSpeech-1.1', 'M-AILABS']
+	supported_datasets = ['LJSpeech-1.0', 'LJSpeech-1.1', 'M-AILABS', 'gnd_dan_brown', 'lindat']
 	if args.dataset not in supported_datasets:
 		raise ValueError('dataset value entered {} does not belong to supported datasets: {}'.format(
 			args.dataset, supported_datasets))
@@ -45,6 +45,9 @@ def norm_data(args):
 		return [os.path.join(args.base_dir, args.dataset)]
 
 	if args.dataset == 'gnd_dan_brown':
+		return [os.path.join(args.base_dir, args.dataset)]
+
+	if args.dataset == 'lindat':
 		return [os.path.join(args.base_dir, args.dataset)]
 
 	if args.dataset == 'M-AILABS':
@@ -91,7 +94,7 @@ def main():
 	parser.add_argument('--base_dir', default='')
 	parser.add_argument('--hparams', default='',
 		help='Hyperparameter overrides as a comma-separated list of name=value pairs')
-	parser.add_argument('--dataset', default='gnd_dan_brown')
+	parser.add_argument('--dataset', default='lindat')
 	parser.add_argument('--language', default='en_US')
 	parser.add_argument('--voice', default='female')
 	parser.add_argument('--reader', default='mary_ann')

@@ -1,6 +1,7 @@
 import argparse
 import os
 from time import sleep
+import json
 
 import infolog
 import tensorflow as tf
@@ -32,7 +33,11 @@ def read_seq(file):
 		return [0, 0, 0], ''
 
 def prepare_run(args):
-	modified_hp = hparams.parse(args.hparams)
+	if args.hparams_fp is not None:
+		modified_hp = tf.contrib.training.HParams.parse_json(
+			open(args.hparams_fp, 'r').read())
+	else:
+		modified_hp = hparams.parse(args.hparams)
 	os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(args.tf_log_level)
 	run_name = args.name or args.model
 	log_dir = os.path.join(args.base_dir, 'logs-{}'.format(run_name))
@@ -115,6 +120,7 @@ def main():
 	parser.add_argument('--wavenet_train_steps', type=int, default=500000, help='total number of wavenet training steps')
 	parser.add_argument('--tf_log_level', type=int, default=1, help='Tensorflow C++ log level.')
 	parser.add_argument('--slack_url', default=None, help='slack webhook notification destination link')
+	parser.add_argument('--hparams_fp', default=None, help='path to json-stored hparams')
 	args = parser.parse_args()
 
 	accepted_models = ['Tacotron', 'WaveNet', 'Tacotron-2']
