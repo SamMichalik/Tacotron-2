@@ -34,8 +34,7 @@ def read_seq(file):
 
 def prepare_run(args):
 	if args.hparams_fp is not None:
-		modified_hp = tf.contrib.training.HParams.parse_json(
-			open(args.hparams_fp, 'r').read())
+		modified_hp = hparams.parse_json(open(args.hparams_fp, 'r').read())
 	else:
 		modified_hp = hparams.parse(args.hparams)
 	os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(args.tf_log_level)
